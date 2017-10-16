@@ -3,6 +3,9 @@
 #include <string>
 #include <typeinfo>
 #include <iomanip>
+#include <cstdlib>
+#include <ctime>
+#include <sstream>
 using namespace std;
 
 template <class SType> class Sheet
@@ -47,6 +50,12 @@ public:
 		}
 	};
 
+    static void getCount()
+    {
+    	static int count = 0;
+    	cout << "It's static method: " << count << endl;
+    	count++;
+	}
 
 	void getSheetFromFile(string name_file) {
 		ifstream in(name_file.c_str());
@@ -68,7 +77,7 @@ public:
 			}
 			height++;
 		}
-		width++;
+		//width++;
 		init();
 
 		in.seekg(0, ios::beg);
@@ -80,6 +89,7 @@ public:
 		}
 
 		in.close();
+		Sheet<int>::getCount();
 	}
 
 	void addItem(SType item, int x, int y) {
@@ -119,12 +129,31 @@ public:
 
 int main()
 {
-	Sheet<int> obj;
+	srand(time(0));
+	
+	Sheet<int> obj[6];
 
-	obj.getSheetFromFile("tset_sheet.txt");
-	obj.printSheet();
-
-	system("pause");
-
+	for (int i = 0; i < 6; i++) {
+		ostringstream ss;
+    	ss << i;
+    	string s = ss.str();
+	    cout << s;
+	    string tmp_f = s + ".txt";
+	    
+		ofstream tmp(tmp_f.c_str());
+		int rnd = rand() %  10;
+		for (int j = 0; j < rnd; j++) {
+			for (int h = 0; h < rnd; h++) {
+				tmp << h + j + 1 << " ";
+			}
+			if (j < rnd - 1)
+			    tmp << endl;
+		}
+		tmp.close();
+		
+		obj[i].getSheetFromFile(tmp_f);
+		obj[i].printSheet();
+		cout << endl;
+	}
 	return 0;
 }
