@@ -36,14 +36,14 @@ public:
 				}
 				continue;
 			}
-			cout << i << endl;
+			cout << typeid(DataType).name() << endl;
 		}
 		// typename Vector<DataType>::List *start = NULL;
 		// start = new typename Vector<DataType>::List;
 		// start->item = size;
 		// cout << "size: " << start->item << endl;
 		// cout << "capacity: " << capacity << endl;
-	//}
+	}
 
 
 	/*

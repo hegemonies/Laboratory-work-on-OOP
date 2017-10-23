@@ -2,7 +2,7 @@
 
 int main()
 {
-	Vector<int> obj(5);
-
+	Vector<int> obj;
+	obj.initItemsOfList(5);
 	return 0;
 }

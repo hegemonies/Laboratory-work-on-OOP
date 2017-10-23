@@ -1,6 +1,4 @@
-#ifndef KIT_H
-#define KIT_H
-
+#pragma once
 #include <iostream>
 
 using namespace std;
@@ -14,8 +12,8 @@ protected:
 		List *prev;
 		DataType item;
 	};
-	int size;
-	List *start = NULL;
+	unsigned int size;
+	List *start;
 public:
 	Kit() {
 		size = 500;
@@ -23,11 +21,11 @@ public:
 	Kit(int s) {
 		size = s;
 	}
-	virtual void initItemsOfList(int) = 0;/*
+	virtual void initItemsOfList(int) = 0;
+	/*
 	virtual int countItemsOfList() = 0;
 	virtual void addInList(DataType, int) = 0;
 	virtual void deleteItemOfList(int) = 0;
-	virtual void moveItemOfList(int, int) = 0;*/
+	virtual void moveItemOfList(int, int) = 0;
+	*/
 };
-
-#endif

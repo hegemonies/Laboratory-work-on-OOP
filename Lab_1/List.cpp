@@ -8,7 +8,7 @@ struct List
 {
 	List *next;
 	List *prev;
-	int item;
+	inem;
 };
 
 void initItemsOfList(List *, int);
