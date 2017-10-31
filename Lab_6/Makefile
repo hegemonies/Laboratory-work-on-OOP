@@ -6,9 +6,6 @@ main: main.o
 main.o: main.cpp
 	g++ -std=c++11 -Wall -c main.cpp -o main.o
 
-vector.o: vector.cpp
-	g++ -std=c++11 -Wall -c vector.cpp -o vector.o
-
 .PHONY: clean
 
 clean:
