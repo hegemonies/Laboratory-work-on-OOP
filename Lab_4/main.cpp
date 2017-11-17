@@ -33,6 +33,9 @@ public:
 	Sheet() {
 		height = width = 0;
 	};
+
+	Sheet(const Sheet&) = default;
+
 	Sheet(int h, int w) {
 		height = h;
 		width = w;
@@ -50,12 +53,12 @@ public:
 		}
 	};
 
-    static void getCount()
+   /* static void getCount()
     {
     	static int count = 0;
     	cout << "It's static method: " << count << endl;
     	count++;
-	}
+	}*/
 
 	void getSheetFromFile(string name_file) {
 		ifstream in(name_file.c_str());
@@ -89,7 +92,7 @@ public:
 		}
 
 		in.close();
-		Sheet<int>::getCount();
+		//Sheet<int>::getCount();
 	}
 
 	void addItem(SType item, int x, int y) {

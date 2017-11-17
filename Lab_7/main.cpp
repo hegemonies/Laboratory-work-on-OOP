@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <iomanip>
 
 using namespace std;
 
@@ -16,6 +17,12 @@ struct purchaseData
 	int price;
 	int quantity;
 	string name;
+
+	purchaseData() = default;
+
+	purchaseData(const purchaseData&) = default;
+
+	purchaseData(int n, int p, int q, string nm) : number(n), price(p), quantity(q), name(nm) {};
 };
 
 class List
@@ -25,46 +32,46 @@ protected:
 		list *next;
 		purchaseData *data;
 	};
-	unsigned int totalSize;
-	unsigned int capacity;
-	unsigned int size;
+	const int totalSize = 500;
+	int capacity;
+	int size;
 	list *start;
 public:
 	List(void)
 	{
 		capacity = 0;
 		size = 100;
-		totalSize = 500;
 		start = NULL;
 	}
 
-	List(unsigned int cpct)
+	/*List(int cpct)
 	{
 		size = 100;
-		totalSize = 500;
 		if (cpct >= size || cpct >= totalSize) {
 			cerr << "Too many member capacity\n";
 			exit(1);
 		}
 		capacity = cpct;
 
-		for (unsigned int i = 0; i < capacity; i++) {
+		for (int i = 0; i < capacity; i++) {
 			if (i == 0) {
 				start = new list;
 				start->next = NULL;
-				start->data = new purchaseData;
-				start->data->number = 0;
-				start->data->price = 0;
-				start->data->quantity = 0;
-				start->data->name = "";
+				start->data = new purchaseData(0, 0, 0, "");
+				CHECK_MALLOC(start->data);
+				// start->data->number = 0;
+				// start->data->price = 0;
+				// start->data->quantity = 0;
+				// start->data->name = "";
 			} else {
 				list *node = new list;
 				node->next = NULL;
-				node->data = new purchaseData;
-				node->data->number = 0;
-				node->data->price = 0;
-				node->data->quantity = 0;
-				node->data->name = "";
+				node->data = new purchaseData(0, 0, 0, "");
+				CHECK_MALLOC(node->data);
+				// node->data->number = 0;
+				// node->data->price = 0;
+				// node->data->quantity = 0;
+				// node->data->name = "";
 
 				list *tmp = start;
 
@@ -76,25 +83,27 @@ public:
 			}
 
 		}
-	}
+	}*/
 
 	~List(void)
 	{
 		list *prev = start;
-		list *next = start->next;
+		if (prev) {
+			list *next = start->next;
 
-		while (next != NULL) {
-			delete prev;
-			prev = next;
-			next = next->next;
+			while (next != NULL) {
+				delete prev;
+				prev = next;
+				next = next->next;
+			}
 		}
 	}
 
-	void push(string nm, int prc, int qt)
+	void append(string nm, int prc, int qt)
 	{
 		try {
 			if (capacity >= totalSize) {
-				throw 1;
+				throw;
 			}
 		} catch (...) {
 			cerr << "Out of the array/n";
@@ -104,20 +113,15 @@ public:
 		list *node = start;
 
 		if (!node) {
-			//capacity++;
 			start = new list;
 			CHECK_MALLOC(start);
 			start->next = NULL;
-			start->data = new purchaseData;
+			start->data = new purchaseData(capacity, prc, qt, nm);
 			CHECK_MALLOC(start->data);
-			start->data->number = capacity;
-			start->data->price = prc;
-			start->data->quantity = qt;
-			start->data->name = nm;
 			return;
 		}
 
-		for (unsigned int i = 0; i < capacity; i++) {
+		for (int i = 0; i < capacity; i++) {
 			node = node->next;
 		}
 
@@ -127,12 +131,8 @@ public:
 			node->next = new list;
 			CHECK_MALLOC(node->next);
 			node->next->next = NULL;
-			node->next->data = new purchaseData;
+			node->next->data = new purchaseData(capacity, prc, qt, nm);
 			CHECK_MALLOC(node->next->data);
-			node->next->data->number = capacity;
-			node->next->data->price = prc;
-			node->next->data->quantity = qt;
-			node->next->data->name = nm;
 			return;
 		}
 
@@ -142,13 +142,27 @@ public:
 		node = new list;
 		CHECK_MALLOC(node);
 		node->next = NULL;
-		node->data = new purchaseData;
+		node->data = new purchaseData(capacity, prc, qt, nm);
 		CHECK_MALLOC(node->data);
-		node->data->number = capacity;
-		node->data->price = prc;
-		node->data->quantity = qt;
-		node->data->name = nm;
 		tmp->next = node;
+	}
+
+	void push(string nm, int prc, int qt, int pos)
+	{
+		if (pos > capacity) {
+			cerr << "Error: there is no such position.\n" << "position = " << pos << endl;
+			return;
+		}
+
+		list *tmp = start;
+
+		for (int i = 0; i < pos; i++) {
+			tmp = tmp->next;
+		}
+
+		tmp->data->price = prc;
+		tmp->data->quantity = qt;
+		tmp->data->name = nm;
 	}
 
 	void deleteItem(purchaseData *item)//TODO poheril
@@ -156,7 +170,7 @@ public:
 		list *node = start;
 		list *prev;
 
-		for (unsigned int i = 0; i < capacity - 1; i++) {
+		for (int i = 0; i < capacity - 1; i++) {
 			if (node->data == item) {
 				break;
 			}
@@ -176,8 +190,8 @@ public:
 	void print(void)
 	{
 		list *node = start;
-		cout << "capacity = " << capacity << endl;
-		for (unsigned int i = 0; i < capacity + 1; i++) {
+		cout << "capacity = " << capacity + 1 << endl;
+		for (int i = 0; i < capacity + 1; i++) {
 			cout << node->data->number << " ";
 			cout << node->data->name << " ";
 			cout << node->data->price << " ";
@@ -189,15 +203,42 @@ public:
 	}
 };
 
-int main(void)
+class Sheet
 {
+	int height;
+	const int width = 3;
+
 	List list;
 
-	list.push("Apple", 20, 1);
-	list.push("Book", 320, 1);
-	list.push("Ticket", 190, 2);
-
-	list.print();
+	List preplist;
 	
+public:
+	Sheet()
+	{
+		preplist.append("Apple", 20, 1);
+		preplist.append("Book", 320, 1);
+		preplist.append("Ticket", 190, 2);
+
+		preplist.print();
+	}
+
+	void print(void)
+	{
+		cout << "       " << setw(5);
+
+		for (int i = 0; i < width; i++) {
+			cout << setw(5) << i + 1;
+		}
+	}
+
+	
+};
+
+int main(void)
+{
+	Sheet sheet;
+
+	sheet.print();
+
 	return 0;
 }

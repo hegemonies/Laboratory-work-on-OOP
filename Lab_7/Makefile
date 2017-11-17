@@ -1,3 +1,3 @@
 all:
-	g++ -Wall main.cpp -o main
+	g++ -std=c++11 -Wall main.cpp -o main
 	./main
