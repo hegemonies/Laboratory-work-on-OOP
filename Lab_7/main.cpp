@@ -25,13 +25,14 @@ struct purchaseData
 	purchaseData(int n, int p, int q, string nm) : number(n), price(p), quantity(q), name(nm) {};
 };
 
+struct list {
+	list *next;
+	purchaseData *data;
+};
+
 class List
 {
 protected:
-	struct list {
-		list *next;
-		purchaseData *data;
-	};
 	const int totalSize = 500;
 	int capacity;
 	int size;
@@ -201,6 +202,25 @@ public:
 		}
 
 	}
+
+	int getCapacity()
+	{
+		return capacity;
+	}
+
+	list *operator[] (int n)
+	{
+		if (n > capacity) {
+			return NULL;
+		}
+		list *node = start;
+
+		for (int i = 0; i < n; i++) {
+			node = node->next;
+		}
+
+		return node;
+	}
 };
 
 class Sheet
@@ -217,28 +237,94 @@ public:
 	{
 		preplist.append("Apple", 20, 1);
 		preplist.append("Book", 320, 1);
-		preplist.append("Ticket", 190, 2);
-
-		preplist.print();
+		preplist.append("Ticket", 190, 1);
+		preplist.append("Khunjut", 12, 1);
+		preplist.append("Juice", 65, 1);
+		preplist.append("Milk", 34, 1);
+		preplist.append("Popcorn", 150, 1);
+		preplist.append("Eggs", 27, 1);
+		preplist.append("Sausage", 340, 1);
 	}
 
-	void print(void)
+	void add(int n, int qt)
+	{
+		// list *node = preplist[n - 1];
+		list.append(preplist[n - 1]->data->name, preplist[n - 1]->data->price, preplist[n - 1]->data->quantity * qt);
+	}
+
+	void print(List &list, bool own)
 	{
 		cout << "       " << setw(5);
+		cout << "Name";
+		cout << "\t" << "Price";
 
-		for (int i = 0; i < width; i++) {
-			cout << setw(5) << i + 1;
+		if (own) {
+			cout << "\t" << "Quantity";
+			cout << setw(9) << "Amount";	
+		}
+		cout << "\n";
+
+		int k = own ? 3 : 0;
+
+		for (int i = 0; i < width + k; i++) {
+			cout << "-------";
+		}
+		cout << endl;
+
+		for (int i = 0; i < list.getCapacity() + 1; i++) {
+
+			if (!list.getCapacity() && !list[0]) {
+				break;
+			}
+
+			cout << setw(4) << list[i]->data->number + 1 << "  |";
+			cout << "\t" << list[i]->data->name;
+			cout << "\t" << list[i]->data->price;
+			if (own) {
+				cout << "\t" << list[i]->data->quantity;
+				cout << "\t" << setw(5) << list[i]->data->price * list[i]->data->quantity;
+			}
+			cout << "\n";
 		}
 	}
 
-	
+	void print(string name_list)
+	{
+		if (name_list == "self") {
+			cout << "\n";
+			print(list, true); 
+		} else if (name_list == "prep") {
+			cout << "\n";
+			print(preplist, false);
+		} else {
+			cout << "Error name list\n";
+		}
+	}
+
+	void buy(void)
+	{
+		int sum = 0;
+		for (int i = 0; i < list.getCapacity() + 1; i++) {
+			sum += (list[i]->data->price * list[i]->data->quantity);
+		}
+
+		cout << "\nSuccessful! You made a purchase on " << sum << "\n";
+	}
 };
 
 int main(void)
 {
 	Sheet sheet;
 
-	sheet.print();
+	sheet.print("prep");
+
+	sheet.add(4, 1);
+	sheet.add(6, 1);
+	sheet.add(8, 1);
+
+	sheet.print("self");
+
+	sheet.buy();
 
 	return 0;
 }
