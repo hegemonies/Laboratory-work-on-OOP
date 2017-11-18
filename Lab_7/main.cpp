@@ -273,7 +273,7 @@ public:
 	void search(string nm)
 	{
 		listNode *node;
-		node = list[0];
+		node = preplist[0];
 
 		while (node->data->name != nm) {
 			node = node->next;
@@ -313,12 +313,16 @@ int main(void)
 			cout << "Enter number of item: ";
 			getline(cin, answer);
 			cout << "\n";
-			int n = (int)answer.c_str()[0];
+
+			int n = (int)answer.c_str()[0] - 48;
+			cout << "n = " << n << endl;
 
 			cout << "Enter amount: ";
 			getline(cin, answer);
 			cout << "\n";
-			int a = (int)answer.c_str()[0];
+
+			int a = (int)answer.c_str()[0] - 48;
+			cout << "a = " << a << endl;
 
 			sheet.add(n, a);
 			cout << endl;
@@ -343,6 +347,7 @@ int main(void)
 			sheet.buy();
 			continue;
 		}
+		continue;
 	}
 
 	return 0;
