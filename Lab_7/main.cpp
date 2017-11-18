@@ -187,11 +187,11 @@ class Sheet
 	int height;
 	const int width = 3;
 
-	List list;
 
 	List preplist;
 	
 public:
+	List list;
 	Sheet()
 	{
 		preplist.append("Apple", 20, 1);
@@ -207,6 +207,9 @@ public:
 
 	void add(int n, int qt)
 	{
+		if (n > preplist.getCapacity()) {
+			return;
+		}
 		list.append(preplist[n - 1]->data->name, preplist[n - 1]->data->price, preplist[n - 1]->data->quantity * qt);
 		height++;
 	}
@@ -262,6 +265,10 @@ public:
 
 	void buy(void)
 	{
+		if (!list.getCapacity()) {
+			cout << "Basket is empty.\n";
+			return;
+		}
 		int sum = 0;
 		for (int i = 0; i < list.getCapacity() + 1; i++) {
 			sum += (list[i]->data->price * list[i]->data->quantity);
@@ -272,14 +279,15 @@ public:
 
 	void search(string nm)
 	{
-		listNode *node;
-		node = preplist[0];
+		listNode *node = preplist[0];
 
-		while (node->data->name != nm) {
+		while ((node != 0) && (node->data->name != nm)) {
 			node = node->next;
 		}
-
-		cout << node->data->name << " is found. His number is " << node->data->number + 1 << endl;
+		if (node) {
+			cout << node->data->name << " is found. His number is " << node->data->number + 1 << endl;
+		}
+		cout << "There is no such element\n";
 	}
 };
 
@@ -312,17 +320,13 @@ int main(void)
 		if (answer == "add") {
 			cout << "Enter number of item: ";
 			getline(cin, answer);
-			cout << "\n";
 
-			int n = (int)answer.c_str()[0] - 48;
-			cout << "n = " << n << endl;
+			int n = stoi(answer);
 
 			cout << "Enter amount: ";
 			getline(cin, answer);
-			cout << "\n";
 
-			int a = (int)answer.c_str()[0] - 48;
-			cout << "a = " << a << endl;
+			int a = stoi(answer);
 
 			sheet.add(n, a);
 			cout << endl;
