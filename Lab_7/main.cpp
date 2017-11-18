@@ -25,8 +25,8 @@ struct purchaseData
 	purchaseData(int n, int p, int q, string nm) : number(n), price(p), quantity(q), name(nm) {};
 };
 
-struct list {
-	list *next;
+struct listNode {
+	listNode *next;
 	purchaseData *data;
 };
 
@@ -36,7 +36,7 @@ protected:
 	const int totalSize = 500;
 	int capacity;
 	int size;
-	list *start;
+	listNode *start;
 public:
 	List(void)
 	{
@@ -45,52 +45,11 @@ public:
 		start = NULL;
 	}
 
-	/*List(int cpct)
-	{
-		size = 100;
-		if (cpct >= size || cpct >= totalSize) {
-			cerr << "Too many member capacity\n";
-			exit(1);
-		}
-		capacity = cpct;
-
-		for (int i = 0; i < capacity; i++) {
-			if (i == 0) {
-				start = new list;
-				start->next = NULL;
-				start->data = new purchaseData(0, 0, 0, "");
-				CHECK_MALLOC(start->data);
-				// start->data->number = 0;
-				// start->data->price = 0;
-				// start->data->quantity = 0;
-				// start->data->name = "";
-			} else {
-				list *node = new list;
-				node->next = NULL;
-				node->data = new purchaseData(0, 0, 0, "");
-				CHECK_MALLOC(node->data);
-				// node->data->number = 0;
-				// node->data->price = 0;
-				// node->data->quantity = 0;
-				// node->data->name = "";
-
-				list *tmp = start;
-
-				while (tmp->next) {
-					tmp = tmp->next;
-				}
-
-				tmp->next = node;
-			}
-
-		}
-	}*/
-
 	~List(void)
 	{
-		list *prev = start;
+		listNode *prev = start;
 		if (prev) {
-			list *next = start->next;
+			listNode *next = start->next;
 
 			while (next != NULL) {
 				delete prev;
@@ -111,10 +70,10 @@ public:
 			exit(1);
 		}
 
-		list *node = start;
+		listNode *node = start;
 
 		if (!node) {
-			start = new list;
+			start = new listNode;
 			CHECK_MALLOC(start);
 			start->next = NULL;
 			start->data = new purchaseData(capacity, prc, qt, nm);
@@ -129,7 +88,7 @@ public:
 		if (capacity >= size && capacity + 1 < totalSize) {
 			capacity++;
 			size++;
-			node->next = new list;
+			node->next = new listNode;
 			CHECK_MALLOC(node->next);
 			node->next->next = NULL;
 			node->next->data = new purchaseData(capacity, prc, qt, nm);
@@ -138,9 +97,9 @@ public:
 		}
 
 		capacity++;
-		list *tmp = node;
+		listNode *tmp = node;
 		node = node->next;
-		node = new list;
+		node = new listNode;
 		CHECK_MALLOC(node);
 		node->next = NULL;
 		node->data = new purchaseData(capacity, prc, qt, nm);
@@ -155,7 +114,7 @@ public:
 			return;
 		}
 
-		list *tmp = start;
+		listNode *tmp = start;
 
 		for (int i = 0; i < pos; i++) {
 			tmp = tmp->next;
@@ -168,8 +127,8 @@ public:
 
 	void deleteItem(purchaseData *item)//TODO poheril
 	{
-		list *node = start;
-		list *prev;
+		listNode *node = start;
+		listNode *prev;
 
 		for (int i = 0; i < capacity - 1; i++) {
 			if (node->data == item) {
@@ -190,7 +149,7 @@ public:
 
 	void print(void)
 	{
-		list *node = start;
+		listNode *node = start;
 		cout << "capacity = " << capacity + 1 << endl;
 		for (int i = 0; i < capacity + 1; i++) {
 			cout << node->data->number << " ";
@@ -208,12 +167,12 @@ public:
 		return capacity;
 	}
 
-	list *operator[] (int n)
+	listNode *operator[] (int n)
 	{
 		if (n > capacity) {
 			return NULL;
 		}
-		list *node = start;
+		listNode *node = start;
 
 		for (int i = 0; i < n; i++) {
 			node = node->next;
@@ -248,8 +207,8 @@ public:
 
 	void add(int n, int qt)
 	{
-		// list *node = preplist[n - 1];
 		list.append(preplist[n - 1]->data->name, preplist[n - 1]->data->price, preplist[n - 1]->data->quantity * qt);
+		height++;
 	}
 
 	void print(List &list, bool own)
@@ -310,7 +269,27 @@ public:
 
 		cout << "\nSuccessful! You made a purchase on " << sum << "\n";
 	}
+
+	void search(string nm)
+	{
+		listNode *node;
+		node = list[0];
+
+		while (node->data->name != nm) {
+			node = node->next;
+		}
+
+		cout << node->data->name << " is found. His number is " << node->data->number + 1 << endl;
+	}
 };
+
+void help(void)
+{
+	cout << "All terms:\n";
+	cout << "add : Add item in basket.\n";
+	cout << "buy : Buy all item of basket.\n";
+	cout << "search : Search item in list.\n";
+}
 
 int main(void)
 {
@@ -318,13 +297,53 @@ int main(void)
 
 	sheet.print("prep");
 
-	sheet.add(4, 1);
-	sheet.add(6, 1);
-	sheet.add(8, 1);
+	string answer;
+	bool first = true;
 
-	sheet.print("self");
+	while (answer != "exit") {
+		if (first) {
+			help();
+			first = false;
+		}
 
-	sheet.buy();
+		cout << ">>>";
+		getline(cin, answer);
+
+		if (answer == "add") {
+			cout << "Enter number of item: ";
+			getline(cin, answer);
+			cout << "\n";
+			int n = (int)answer.c_str()[0];
+
+			cout << "Enter amount: ";
+			getline(cin, answer);
+			cout << "\n";
+			int a = (int)answer.c_str()[0];
+
+			sheet.add(n, a);
+			cout << endl;
+			sheet.print("self");
+			cout << endl;
+			continue;
+		}
+
+		if (answer == "help") {
+			help();
+			continue;
+		}
+
+		if (answer == "search") {
+			cout << "Enter name of item: ";
+			getline(cin, answer);
+			sheet.search(answer);
+			continue;
+		}
+
+		if (answer == "buy") {
+			sheet.buy();
+			continue;
+		}
+	}
 
 	return 0;
 }
