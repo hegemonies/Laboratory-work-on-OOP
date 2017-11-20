@@ -1,0 +1,4 @@
+﻿  MyForm.cpp
+MyForm.cpp(7): warning C4829: Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+  lab8_2.vcxproj -> C:\Users\Даниил\Documents\Visual Studio 2015\Projects\lab8_2\x64\Release\lab8_2.exe
+  lab8_2.vcxproj -> C:\Users\Даниил\Documents\Visual Studio 2015\Projects\lab8_2\x64\Release\lab8_2.pdb (Full PDB)

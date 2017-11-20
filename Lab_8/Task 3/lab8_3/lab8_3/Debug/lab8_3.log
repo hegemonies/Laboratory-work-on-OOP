@@ -1,0 +1,5 @@
+﻿  MyForm.cpp
+MyForm.cpp(7): warning C4829: Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+  MyForm.obj : /DEBUG:FASTLINK не поддерживается, если присутствует управляемый код; выполняется перезапуск компоновки с /DEBUG:FULL
+  lab8_3.vcxproj -> C:\Users\Даниил\Documents\Visual Studio 2015\Projects\lab8_3\Debug\lab8_3.exe
+  lab8_3.vcxproj -> C:\Users\Даниил\Documents\Visual Studio 2015\Projects\lab8_3\Debug\lab8_3.pdb (Partial PDB)

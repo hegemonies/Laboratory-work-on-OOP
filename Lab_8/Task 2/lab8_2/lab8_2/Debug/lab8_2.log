@@ -1,0 +1,4 @@
+﻿  MyForm.cpp
+  MyForm.obj : /DEBUG:FASTLINK не поддерживается, если присутствует управляемый код; выполняется перезапуск компоновки с /DEBUG:FULL
+LINK : error LNK2001: эхЁрчЁх°хээ√щ тэх°эшщ ёшьтюы "_main"
+C:\Users\─рэшшы\Documents\Visual Studio 2015\Projects\lab8_2\Debug\lab8_2.exe : fatal error LNK1120: эхЁрчЁх°хээ√ї тэх°эшї ¤ыхьхэЄют: 1
